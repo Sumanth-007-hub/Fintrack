@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07111b">
+  <title>FinTrack — Personal Finance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+    <a class="brand" href="#" data-page="Dashboard">
+      <span class="brand-icon">↗</span>
+      <span><b>FinTrack</b><small>PLAN · TRACK · GROW</small></span>
+    </a>
+    <div class="nav-label">WORKSPACE</div>
+    <nav class="nav">
+      <button class="nav-item active" data-page="Dashboard"><span>⌂</span>Dashboard <i>›</i></button>
+      <button class="nav-item" data-page="Add Transaction"><span>＋</span>Add Transaction</button>
+      <button class="nav-item" data-page="Transaction History"><span>▦</span>Transaction History</button>
+      <button class="nav-item" data-page="Analytics"><span>◷</span>Analytics</button>
+      <button class="nav-item" data-page="Insights"><span>✧</span>Insights</button>
+      <button class="nav-item" data-page="About This Project"><span>ⓘ</span>About This Project</button>
+    </nav>
+    <div class="sidebar-promo">
+      <div class="promo-kicker">SMART FINANCE</div>
+      <h3>Brighter future.</h3>
+      <p>Build better habits.<br>Reach bigger goals.</p>
+      <div class="mountain-mini"></div>
+    </div>
+    <div class="profile">
+      <div class="avatar">S</div>
+      <div><b>Finance Enthusiast</b><small>Personal workspace</small></div>
+    </div>
+    <div class="side-foot">BUILT WITH PYTHON · FLASK</div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="search-wrap"><span>⌕</span><input id="globalSearch" placeholder="Search transactions, categories..."><kbd>⌘ K</kbd></div>
+      <div class="top-actions"><span class="status-dot"></span><span class="live-label">YOUR FINANCES, IN FOCUS</span><button id="themeToggle" class="icon-btn" title="Toggle visual theme">◐</button></div>
+    </header>
+    <section id="pageContent" aria-live="polite">
+      <div class="hero">
+        <div class="hero-copy"><div class="eyebrow">FINTRACK / PERSONAL FINANCE</div><h1>Hey there! <span class="wave">✦</span></h1><p>Take control of your finances. Build the life you want.</p><div class="hero-line"></div></div>
+        <div class="hero-quote"><p>“A little planning today<br>leads to big freedom tomorrow.”</p><span>— YOUR FINANCIAL JOURNEY</span></div>
+        <div class="hero-art" aria-hidden="true"><div class="sun"></div><div class="peak peak-back"></div><div class="peak peak-front"></div><div class="person"></div></div>
+      </div>
+      <div class="section-heading"><span>01</span><div><h2>Financial overview</h2><p>Your money at a glance</p></div><div class="heading-line"></div></div>
+      <div class="metrics">
+        <article class="metric-card income-card"><div class="metric-top"><span class="metric-icon">↗</span><span class="metric-label">TOTAL INCOME</span></div><strong id="incomeValue">₹0.00</strong><small><span class="positive">●</span> Money received</small><div class="sparkline" id="sparkIncome"></div></article>
+        <article class="metric-card expense-card"><div class="metric-top"><span class="metric-icon">↘</span><span class="metric-label">TOTAL EXPENSES</span></div><strong id="expenseValue">₹0.00</strong><small><span class="negative">●</span> Money spent</small><div class="sparkline" id="sparkExpense"></div></article>
+        <article class="metric-card savings-card"><div class="metric-top"><span class="metric-icon">◇</span><span class="metric-label">NET SAVINGS</span></div><strong id="savingsValue">₹0.00</strong><small><span class="purple-dot">●</span> Income minus expenses</small><div class="sparkline" id="sparkSavings"></div></article>
+      </div>
+      <div class="charts-grid">
+        <section class="panel spending-panel"><div class="panel-head"><div class="panel-title-icon mint">▥</div><div><h3>Spending breakdown</h3><p>Where does your money go?</p></div><span class="pill">BY CATEGORY</span></div><div id="donutChart" class="chart"></div></section>
+        <section class="panel trend-panel"><div class="panel-head"><div class="panel-title-icon cyan">⌁</div><div><h3>Income vs expenses</h3><p>Your financial performance</p></div><span class="pill">ALL RECORDS</span></div><div id="trendChart" class="chart"></div></section>
+      </div>
+      <div class="bottom-grid">
+        <section class="panel transactions-panel"><div class="panel-head"><div class="panel-title-icon mint">◷</div><div><h3>Recent transactions</h3><p>Your latest financial activities</p></div><button class="text-button" data-page="Transaction History">View all →</button></div><div id="recentTable"></div></section>
+        <section class="panel insight-panel"><div class="insight-orb">✦</div><div class="eyebrow">FINTRACK INSIGHT</div><h3 id="insightTitle">Your journey starts here</h3><p id="insightText">Add a transaction to unlock financial insights.</p><div class="savings-ring" id="savingsRing"><span id="savingsRate">0%</span><small>SAVINGS RATE</small></div></section>
+      </div>
+      <div class="footer">FINTRACK <span>•</span> PLAN BETTER. SPEND SMARTER. BUILD YOUR FUTURE.</div>
+    </section>
+  </main>
+</div>
+
+<dialog id="transactionDialog" class="dialog">
+  <form id="transactionForm">
+    <div class="dialog-head"><div><div class="eyebrow">FINTRACK / RECORD</div><h2>Add transaction</h2><p>Every small step counts.</p></div><button type="button" class="close-btn" id="closeDialog">×</button></div>
+    <div class="type-switch"><label><input type="radio" name="type" value="Income"><span>↗ &nbsp;Income</span></label><label><input type="radio" name="type" value="Expense" checked><span>↘ &nbsp;Expense</span></label></div>
+    <div class="form-grid"><label>Category<select id="category" required></select></label><label>Amount (₹)<input id="amount" type="number" min="0.01" step="0.01" placeholder="0.00" required></label><label>Date<input id="transactionDate" type="date" value="{{ today }}" required></label><label class="full">Description<input id="description" maxlength="180" placeholder="e.g. Monthly salary or groceries"></label></div>
+    <div class="form-actions"><button type="button" class="secondary-btn" id="cancelDialog">Cancel</button><button class="primary-btn" type="submit">Save transaction ↗</button></div>
+    <p id="formMessage" class="form-message"></p>
+  </form>
+</dialog>
+<div id="toast" class="toast"></div>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
