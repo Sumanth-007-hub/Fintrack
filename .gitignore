@@ -4,3 +4,12 @@ __pycache__/
 venv/
 .env
 .DS_Store
+
+# Local database backups
+finance_backup.db
+
+# Python backup files
+web_app_backup.py
+web_app_before_login.py
+web_app_before_postgres.py
+web_app_before_replacement.py
